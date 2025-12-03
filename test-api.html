@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cataas API Test</title>
+</head>
+<body>
+    <h1>Testing Cataas API</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="result"></div>
+    <div id="images"></div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            const imagesDiv = document.getElementById('images');
+            
+            try {
+                resultDiv.innerHTML = 'Fetching...';
+                const response = await fetch('https://cataas.com/cat?json=true');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                
+                // Try different URL formats
+                const url1 = `https://cataas.com${data.url}`;
+                const url2 = `https://cataas.com/cat/${data._id}`;
+                const url3 = `https://cataas.com/cat`;
+                
+                imagesDiv.innerHTML = `
+                    <h3>Testing URLs:</h3>
+                    <p>URL from API: ${data.url}</p>
+                    <p>Constructed URL 1: ${url1}</p>
+                    <img src="${url1}" style="max-width: 200px; border: 2px solid red;" onerror="this.style.border='3px solid red'; this.alt='FAILED'" />
+                    <br><br>
+                    <p>Constructed URL 2: ${url2}</p>
+                    <img src="${url2}" style="max-width: 200px; border: 2px solid blue;" onerror="this.style.border='3px solid red'; this.alt='FAILED'" />
+                    <br><br>
+                    <p>Direct URL: ${url3}</p>
+                    <img src="${url3}" style="max-width: 200px; border: 2px solid green;" onerror="this.style.border='3px solid red'; this.alt='FAILED'" />
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
+

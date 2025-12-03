@@ -15,49 +15,59 @@ function App() {
   useEffect(() => {
     const fetchCats = async () => {
       try {
-        const catPromises = Array.from({ length: TOTAL_CATS }, async () => {
+        const catPromises = Array.from({ length: TOTAL_CATS }, async (_, index) => {
           try {
-            const response = await fetch('https://cataas.com/cat?json=true')
+            // Fetch JSON data from Cataas API
+            const response = await fetch('https://cataas.com/cat?json=true', {
+              headers: {
+                'Accept': 'application/json',
+              }
+            })
+            
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`)
             }
-            const data = await response.json()
             
-            // Handle different possible response formats
+            const data = await response.json()
+            console.log(`Cat ${index + 1} API response:`, data)
+            
+            // Construct the image URL - Cataas returns url like "/cat/abc123" or "/cat/abc123.jpg"
             let imageUrl
             if (data.url) {
-              // If url starts with /, prepend the domain
-              imageUrl = data.url.startsWith('/') 
-                ? `https://cataas.com${data.url}`
-                : data.url.startsWith('http')
-                ? data.url
-                : `https://cataas.com/${data.url}`
+              // The URL from API typically starts with "/cat/"
+              imageUrl = data.url.startsWith('http') 
+                ? data.url 
+                : `https://cataas.com${data.url}`
             } else if (data._id) {
-              // Fallback: use ID to construct URL
+              // Fallback: construct URL from ID
               imageUrl = `https://cataas.com/cat/${data._id}`
             } else {
-              // Last resort: use a direct cat endpoint with random parameter
-              imageUrl = `https://cataas.com/cat?t=${Date.now()}&${Math.random()}`
+              // Last resort: direct endpoint with cache busting
+              imageUrl = `https://cataas.com/cat?${Date.now()}-${index}`
             }
             
+            console.log(`Cat ${index + 1} final URL:`, imageUrl)
+            
             return {
-              id: data._id || `cat-${Date.now()}-${Math.random()}`,
+              id: data._id || `cat-${Date.now()}-${index}`,
               url: imageUrl,
               tags: data.tags || []
             }
           } catch (err) {
-            console.error('Error fetching individual cat:', err)
+            console.error(`Error fetching cat ${index + 1}:`, err)
             // Return a fallback image
+            const fallbackUrl = `https://cataas.com/cat?${Date.now()}-${index}`
             return {
-              id: `fallback-${Date.now()}-${Math.random()}`,
-              url: `https://cataas.com/cat?t=${Date.now()}`,
+              id: `fallback-${Date.now()}-${index}`,
+              url: fallbackUrl,
               tags: []
             }
           }
         })
         
         const catData = await Promise.all(catPromises)
-        console.log('Fetched cats:', catData) // Debug log
+        console.log('Successfully fetched', catData.length, 'cats')
+        console.log('Sample cat data:', catData[0])
         setCats(catData)
         setLoading(false)
       } catch (error) {
@@ -75,7 +85,12 @@ function App() {
     const currentCat = cats[currentIndex]
     
     if (direction === 'right') {
-      setLikedCats(prev => [...prev, currentCat])
+      console.log('Liking cat:', currentCat.id, currentCat.url)
+      setLikedCats(prev => {
+        const updated = [...prev, currentCat]
+        console.log('Liked cats so far:', updated.length, updated.map(c => ({ id: c.id, url: c.url })))
+        return updated
+      })
     }
 
     setCurrentIndex(prev => prev + 1)

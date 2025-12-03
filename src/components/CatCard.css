@@ -33,6 +33,51 @@
   display: block;
 }
 
+.image-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.loading-spinner-small {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.image-error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffe0e0;
+  color: #d32f2f;
+  padding: 1rem;
+  text-align: center;
+}
+
+.error-url {
+  font-size: 0.7rem;
+  word-break: break-all;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
 .swipe-indicator {
   position: absolute;
   top: 50%;
