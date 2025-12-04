@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">lovin kitty</string>
+    <string name="title_activity_main">lovin kitty</string>
+    <string name="package_name">com.catswipe.app</string>
+    <string name="custom_url_scheme">com.catswipe.app</string>
+</resources>

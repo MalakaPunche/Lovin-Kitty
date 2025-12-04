@@ -2,8 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import './CatCard.css'
 
 function CatCard({ cat, index, isActive, onSwipe }) {
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [imageError, setImageError] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const startPosRef = useRef({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
@@ -23,12 +21,6 @@ function CatCard({ cat, index, isActive, onSwipe }) {
       isDraggingRef.current = false
     }
   }, [isActive])
-
-  // Reset image loading state when cat changes
-  useEffect(() => {
-    setImageLoaded(false)
-    setImageError(false)
-  }, [cat.id])
 
   const handleStart = useCallback((clientX, clientY) => {
     if (!isActiveRef.current) return
@@ -145,42 +137,11 @@ function CatCard({ cat, index, isActive, onSwipe }) {
       onTouchEnd={handleTouchEnd}
     >
       <div className="card-image-container">
-        {!imageLoaded && !imageError && (
-          <div className="image-loading">
-            <div className="loading-spinner-small"></div>
-            <p>Loading cat...</p>
-          </div>
-        )}
-        {imageError && (
-          <div className="image-error">
-            <p>😿 Failed to load image</p>
-            <p className="error-url">{cat.url}</p>
-          </div>
-        )}
         <img 
           src={cat.url} 
           alt={`Cat ${index + 1}`}
           className="cat-image"
           draggable={false}
-          style={{ display: imageLoaded && !imageError ? 'block' : 'none' }}
-          onError={(e) => {
-            console.error('Image failed to load:', cat.url, e)
-            setImageError(true)
-            setImageLoaded(false)
-            // Try fallback URL
-            const fallbackUrl = `https://cataas.com/cat?${Date.now()}`
-            console.log('Trying fallback URL:', fallbackUrl)
-            e.target.src = fallbackUrl
-            // Reset error state after a moment to try fallback
-            setTimeout(() => {
-              setImageError(false)
-            }, 100)
-          }}
-          onLoad={() => {
-            console.log('Image loaded successfully:', cat.url)
-            setImageLoaded(true)
-            setImageError(false)
-          }}
         />
         {isActive && (
           <>

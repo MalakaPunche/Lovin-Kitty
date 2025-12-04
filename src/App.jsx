@@ -15,59 +15,29 @@ function App() {
   useEffect(() => {
     const fetchCats = async () => {
       try {
-        const catPromises = Array.from({ length: TOTAL_CATS }, async (_, index) => {
-          try {
-            // Fetch JSON data from Cataas API
-            const response = await fetch('https://cataas.com/cat?json=true', {
-              headers: {
-                'Accept': 'application/json',
-              }
-            })
-            
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            
-            const data = await response.json()
-            console.log(`Cat ${index + 1} API response:`, data)
-            
-            // Construct the image URL - Cataas returns url like "/cat/abc123" or "/cat/abc123.jpg"
-            let imageUrl
-            if (data.url) {
-              // The URL from API typically starts with "/cat/"
-              imageUrl = data.url.startsWith('http') 
-                ? data.url 
-                : `https://cataas.com${data.url}`
-            } else if (data._id) {
-              // Fallback: construct URL from ID
-              imageUrl = `https://cataas.com/cat/${data._id}`
-            } else {
-              // Last resort: direct endpoint with cache busting
-              imageUrl = `https://cataas.com/cat?${Date.now()}-${index}`
-            }
-            
-            console.log(`Cat ${index + 1} final URL:`, imageUrl)
-            
-            return {
-              id: data._id || `cat-${Date.now()}-${index}`,
-              url: imageUrl,
-              tags: data.tags || []
-            }
-          } catch (err) {
-            console.error(`Error fetching cat ${index + 1}:`, err)
-            // Return a fallback image
-            const fallbackUrl = `https://cataas.com/cat?${Date.now()}-${index}`
-            return {
-              id: `fallback-${Date.now()}-${index}`,
-              url: fallbackUrl,
-              tags: []
-            }
-          }
-        })
+        // const catPromises = Array.from({ length: TOTAL_CATS }, () =>
+        //   fetch('https://cataas.com/cat?json=true')
+        //     .then(res => res.json())
+        //     .then(data => ({
+        //       id: data._id,
+        //       url: `https://cataas.com${data.url}`,
+        //       tags: data.tags || []
+        //     }))
+        // )
         
-        const catData = await Promise.all(catPromises)
-        console.log('Successfully fetched', catData.length, 'cats')
-        console.log('Sample cat data:', catData[0])
+        // const catData = await Promise.all(catPromises)
+
+                // NOTE:
+        // The JSON endpoint on Cataas (`/cat?json=true`) does not send CORS headers,
+        // which means browsers will often block it and no images will load.
+        // To avoid this, we generate image URLs directly instead of fetching JSON.
+        const catData = Array.from({ length: TOTAL_CATS }, (_v, i) => ({
+          id: i,
+          // `random` query param helps prevent aggressive caching
+          url: `https://cataas.com/cat?random=${Date.now()}-${i}`,
+          tags: []
+        }))
+
         setCats(catData)
         setLoading(false)
       } catch (error) {
@@ -85,12 +55,7 @@ function App() {
     const currentCat = cats[currentIndex]
     
     if (direction === 'right') {
-      console.log('Liking cat:', currentCat.id, currentCat.url)
-      setLikedCats(prev => {
-        const updated = [...prev, currentCat]
-        console.log('Liked cats so far:', updated.length, updated.map(c => ({ id: c.id, url: c.url })))
-        return updated
-      })
+      setLikedCats(prev => [...prev, currentCat])
     }
 
     setCurrentIndex(prev => prev + 1)
@@ -126,7 +91,7 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <h1>🐱 Paws & Preferences</h1>
+        <h1>🐱 Kitty-Lovin'</h1>
         <p className="progress">
           {currentIndex + 1} / {cats.length}
         </p>
