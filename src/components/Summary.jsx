@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './Summary.css'
 
 const EMOTICONS = {
@@ -11,50 +10,6 @@ const EMOTICONS = {
 function Summary({ likedCats, totalCats, onReset }) {
   const likedCount = likedCats.length
   const percentage = Math.round((likedCount / totalCats) * 100)
-  const [imageErrors, setImageErrors] = useState({})
-  const [imageLoading, setImageLoading] = useState({})
-
-  // Debug: Log liked cats data
-  console.log('Summary - Liked cats:', likedCats.map(cat => ({ id: cat.id, url: cat.url })))
-
-  const handleImageError = (catId, index, e) => {
-    const cat = likedCats[index]
-    console.error('Summary image failed to load:', catId, cat?.url)
-    
-    // Try fallback URL
-    if (cat && e.target) {
-      // Try using the cat ID to construct a new URL
-      if (cat.id && !cat.id.startsWith('fallback') && !cat.id.startsWith('cat-')) {
-        const fallbackUrl = `https://cataas.com/cat/${cat.id}`
-        console.log('Trying fallback URL:', fallbackUrl)
-        e.target.src = fallbackUrl
-        // Don't mark as error yet, wait to see if fallback works
-        return
-      }
-      
-      // Last resort: try direct endpoint
-      const directUrl = `https://cataas.com/cat?${Date.now()}-${index}`
-      console.log('Trying direct URL:', directUrl)
-      e.target.src = directUrl
-      return
-    }
-    
-    // If all fallbacks failed, mark as error
-    setImageErrors(prev => ({ ...prev, [catId]: true }))
-  }
-
-  const handleImageLoad = (catId) => {
-    setImageLoading(prev => ({ ...prev, [catId]: false }))
-    setImageErrors(prev => {
-      const newErrors = { ...prev }
-      delete newErrors[catId]
-      return newErrors
-    })
-  }
-
-  const handleImageStartLoad = (catId) => {
-    setImageLoading(prev => ({ ...prev, [catId]: true }))
-  }
 
   return (
     <div className="summary-container">
