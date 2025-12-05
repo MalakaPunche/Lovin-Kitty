@@ -2,6 +2,10 @@
 
 An interactive swipe-style app that lets you like or pass on cats fetched live from the Cataas API, then shows a summary of your picks.
 
+Try this app here:
+
+https://malakapunche.github.io/Lovin-Kitty
+
 ## Features
 
 - Swipe or tap buttons to like/pass (desktop + mobile)
