@@ -1,4 +1,4 @@
-# 🐱 Paws & Preferences: Find Your Favourite Kitty
+# Paws & Preferences: Find Your Favourite Kitty
 
 An interactive swipe-style app that lets you like or pass on cats fetched live from the Cataas API, then shows a summary of your picks.
 

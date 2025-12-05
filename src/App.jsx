@@ -152,7 +152,7 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <h1>🐱 Paws & Preferences</h1>
+        <h1>🐾 Paws & Preferences</h1>
         <p className="progress">
           {cats.length - currentIndex} / {cats.length}
         </p>

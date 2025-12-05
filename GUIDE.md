@@ -1,8 +1,6 @@
-# 🐱 Cat Swipe App - Complete Guide
+#  Cat Swipe App - Complete Guide
 
 ## ✅ What's Been Built
-
-The app meets the assignment requirements with extra resilience and polish.
 
 
 
@@ -34,7 +32,7 @@ The app meets the assignment requirements with extra resilience and polish.
 
 
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 
@@ -72,7 +70,7 @@ npm run preview  # serve the production build locally
 
 
 
-## 🌐 Deploying to GitHub Pages
+##  Deploying to GitHub Pages
 
 `vite.config.js` already uses `base: '/Lovin-Kitty/'` and `package.json` sets `homepage` to `https://malakapunche.github.io/Lovin-Kitty` for GitHub Pages.
 
@@ -90,18 +88,7 @@ This builds and publishes `dist` to the `gh-pages` branch using `gh-pages`.
 
 
 
-
-## 🎨 Customization
-
-- **Number of cats**: change `TOTAL_CATS` in `src/App.jsx`.
-
-- **Branding/colors**: adjust gradients and buttons in `src/App.css`.
-
-- **Repo base/URL**: keep `base` and `homepage` in sync with your GitHub Pages URL.
-
-
-
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 - **Images not loading**: ensure internet/Cataas availability. Cards and summary auto-try fallback URLs; summary has a Retry button.
 
@@ -111,7 +98,7 @@ This builds and publishes `dist` to the `gh-pages` branch using `gh-pages`.
 
 
 
-## 💡 Tips
+##  Tips
 
 - Use the summary Retry button for any failed images.
 
