@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import './Summary.css'
 
+const EMOTICONS = {
+  celebration: '🎉',
+  cat: '🐱',
+  sad: '😿',
+  heart: '❤️',
+}
+
 function Summary({ likedCats, totalCats, onReset }) {
   const likedCount = likedCats.length
   const percentage = Math.round((likedCount / totalCats) * 100)
@@ -52,7 +59,7 @@ function Summary({ likedCats, totalCats, onReset }) {
   return (
     <div className="summary-container">
       <div className="summary-content">
-        <h1>🎉 All Done!</h1>
+        <h1>{EMOTICONS.celebration} All Done!</h1>
         <div className="stats">
           <div className="stat-card">
             <div className="stat-number">{likedCount}</div>
@@ -70,13 +77,13 @@ function Summary({ likedCats, totalCats, onReset }) {
 
         {likedCount > 0 ? (
           <>
-            <h2>Your Favourite Kitties 🐱</h2>
+            <h2>Your Favourite Kitties {EMOTICONS.cat}</h2>
             <div className="liked-cats-grid">
               {likedCats.map((cat, index) => (
                 <div key={cat.id || index} className="liked-cat-card">
                   {imageErrors[cat.id] ? (
                     <div className="summary-image-error">
-                      <span className="error-emoji">😿</span>
+                      <span className="error-emoji">{EMOTICONS.sad}</span>
                       <p>Image unavailable</p>
                       <button 
                         className="retry-button"
@@ -122,7 +129,7 @@ function Summary({ likedCats, totalCats, onReset }) {
                       />
                       {!imageLoading[cat.id] && !imageErrors[cat.id] && (
                         <div className="liked-cat-overlay">
-                          <span className="heart-icon">❤️</span>
+                          <span className="heart-icon">{EMOTICONS.heart}</span>
                         </div>
                       )}
                     </>
@@ -133,7 +140,7 @@ function Summary({ likedCats, totalCats, onReset }) {
           </>
         ) : (
           <div className="no-likes">
-            <p>You didn't like any cats this time. 😿</p>
+            <p>You didn't like any cats this time. {EMOTICONS.sad}</p>
             <p>Try again to find your purr-fect match!</p>
           </div>
         )}
