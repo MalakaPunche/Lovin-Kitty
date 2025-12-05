@@ -1,5 +1,8 @@
+/* ------------------------------
+   CAT CARD
+------------------------------ */
+
 .cat-card {
-  position: absolute;
   width: 100%;
   height: 100%;
   cursor: grab;
@@ -10,10 +13,6 @@
 
 .cat-card:active {
   cursor: grabbing;
-}
-
-.cat-card.active {
-  cursor: grab;
 }
 
 .card-image-container {
@@ -32,6 +31,63 @@
   object-fit: cover;
   display: block;
 }
+
+/* ------------------------------
+   IMAGE LOADING
+------------------------------ */
+
+.image-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.loading-spinner-small {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ------------------------------
+   IMAGE ERROR STATE
+------------------------------ */
+
+.image-error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffe0e0;
+  color: #d32f2f;
+  padding: 1rem;
+  text-align: center;
+}
+
+.error-url {
+  font-size: 0.7rem;
+  word-break: break-all;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+/* ------------------------------
+   SWIPE INDICATOR
+------------------------------ */
 
 .swipe-indicator {
   position: absolute;
@@ -65,7 +121,7 @@
   display: block;
 }
 
-/* Mobile optimizations */
+/* Mobile optimization for indicators */
 @media (max-width: 480px) {
   .swipe-indicator {
     font-size: 1.5rem;
@@ -73,3 +129,76 @@
   }
 }
 
+/* ------------------------------
+   ACTION BUTTONS (HISS / PURRFECT!)
+------------------------------ */
+
+.action-buttons {
+  display: flex;
+  gap: 2rem;
+  z-index: 100;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* Base style for both buttons */
+.action-buttons button {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* HISS (dislike) button */
+.dislike-btn {
+  background: #ffd6d6;
+  color: #b10000;
+}
+
+.dislike-btn:hover {
+  background: #ffb3b3;
+  transform: scale(1.12);
+}
+
+.dislike-btn:active {
+  transform: scale(0.95);
+}
+
+/* PURRFECT! (like) button */
+.like-btn {
+  background: #d8ffe0;
+  color: #008b32;
+}
+
+.like-btn:hover {
+  background: #b9ffd0;
+  transform: scale(1.12);
+}
+
+.like-btn:active {
+  transform: scale(0.95);
+}
+
+/* Mobile buttons smaller */
+@media (max-width: 480px) {
+  .action-buttons {
+    gap: 1.2rem;
+  }
+
+  .action-buttons button {
+    width: 75px;
+    height: 75px;
+    font-size: 0.9rem;
+  }
+}
